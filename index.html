@@ -415,6 +415,154 @@
     z-index: -1;
     pointer-events: none;
   }
+
+  @media (max-width: 768px) {
+    .page {
+      padding: 40px 20px 80px;
+      max-width: 100%;
+    }
+
+    .header-title {
+      font-size: 28px;
+    }
+
+    .header-eyebrow {
+      font-size: 9px;
+    }
+
+    .header-subtitle {
+      font-size: 10px;
+    }
+
+    .header-meta {
+      flex-direction: column;
+      gap: 16px;
+      font-size: 9px;
+    }
+
+    .cast-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .cast-row {
+      border-left: none;
+      border-bottom: 1px solid #666;
+      padding: 12px 14px;
+    }
+
+    .cast-row:hover {
+      border-left-color: transparent;
+      border-bottom-color: var(--accent);
+    }
+
+    .block-title {
+      font-size: 16px;
+    }
+
+    .block-label {
+      font-size: 8px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+
+    body {
+      font-size: 13px;
+    }
+
+    .lyric-block {
+      font-size: 13px;
+      padding: 16px 18px;
+    }
+
+    .callout {
+      padding: 14px 16px;
+    }
+
+    .motif-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 12px 0;
+    }
+
+    .motif-source {
+      width: 100%;
+      font-size: 11px;
+    }
+
+    .motif-origin {
+      font-size: 9px;
+      padding: 1px 6px;
+    }
+
+    .footer {
+      flex-direction: column;
+      gap: 12px;
+      font-size: 9px;
+    }
+
+    .credits-table td {
+      padding: 7px 0;
+      font-size: 11px;
+    }
+
+    .credits-table td:first-child {
+      width: 100%;
+      font-size: 9px;
+      padding-right: 0;
+      padding-bottom: 4px;
+    }
+
+    .n {
+      font-size: 24px;
+    }
+
+    .correction-banner {
+      padding: 12px 14px;
+      font-size: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page {
+      padding: 30px 15px 60px;
+    }
+
+    .header-title {
+      font-size: 22px;
+    }
+
+    .header {
+      padding: 16px 0 16px;
+      margin-bottom: 40px;
+    }
+
+    .block {
+      margin-bottom: 36px;
+    }
+
+    .divider {
+      margin: 32px 0;
+    }
+
+    body {
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .tl-item {
+      margin-bottom: 16px;
+    }
+
+    .lyric-block {
+      font-size: 12px;
+      padding: 14px 14px;
+      margin: 12px 0;
+    }
+  }
 </style>
 </head>
 <body>
