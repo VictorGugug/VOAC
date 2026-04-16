@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variations on a Cloud</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+  :root {
+    --bg: #f5f2ec;
+    --ink: #ffffff;
+    --muted: #d0d0d0;
+    --accent: #ffeb99;
+    --rule: #b0b0b0;
+    --highlight: #4a4a4a;
+    --corrected: #e8f0e8;
+    --corrected-border: #5a8a5a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    line-height: 1.9;
+    min-height: 100vh;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 1), 0 0 4px rgba(0, 0, 0, 0.9);
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 40px 120px;
+  }
+
+
+  .header {
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding: 28px 0 24px;
+    margin-bottom: 60px;
+  }
+
+  .header-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 1);
+  }
+
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 6px;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 1), 0 0 4px rgba(0, 0, 0, 0.9);
+  }
+
+  .header-subtitle {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 1);
+  }
+
+  .header-meta {
+    margin-top: 18px;
+    display: flex;
+    gap: 32px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 1);
+  }
+
+  .header-meta span b {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+
+  .correction-banner {
+    background: rgba(80, 80, 80, 0.9);
+    border: 1px solid #ffeb99;
+    border-left: 4px solid #ffeb99;
+    padding: 14px 18px;
+    margin-bottom: 40px;
+    font-size: 11px;
+    color: #f5f5f5;
+    line-height: 1.7;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+  }
+  .correction-banner strong {
+    color: #ffffff;
+    font-weight: 500;
+  }
+  .correction-banner ul {
+    margin-top: 6px;
+    padding-left: 16px;
+  }
+  .correction-banner li {
+    margin-bottom: 3px;
+  }
+
+
+  .block {
+    margin-bottom: 52px;
+  }
+
+  .block-label {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 1);
+  }
+
+  .block-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .block-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 1);
+  }
+
+  p {
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-size: 13px;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 1), 0 0 3px rgba(0, 0, 0, 0.9);
+  }
+
+
+  .cast-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 4px;
+  }
+
+  .cast-row {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px;
+    background: rgba(80, 80, 80, 0.8);
+    border-left: 2px solid transparent;
+    transition: border-color 0.2s;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+  }
+
+  .cast-row:hover {
+    border-left-color: var(--accent);
+  }
+
+  .cast-name {
+    font-weight: 500;
+    font-size: 12px;
+    color: #ffeb99;
+    margin-bottom: 2px;
+  }
+
+  .cast-role {
+    font-size: 10px;
+    color: #d0d0d0;
+    letter-spacing: 0.08em;
+  }
+
+  .cast-row.full {
+    grid-column: 1 / -1;
+  }
+
+
+  .timeline {
+    position: relative;
+    padding-left: 22px;
+    border-left: 1px solid var(--rule);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .tl-date {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 1);
+  }
+
+  .tl-text {
+    font-size: 12.5px;
+    color: #f5f5f5;
+    line-height: 1.7;
+    margin: 0;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 1);
+  }
+
+
+  .credits-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .credits-table tr {
+    border-bottom: 1px solid #666;
+  }
+
+  .credits-table tr:first-child {
+    border-top: 1px solid #666;
+  }
+
+  .credits-table td {
+    padding: 9px 0;
+    font-size: 12px;
+    vertical-align: top;
+    color: #f5f5f5;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 1);
+  }
+
+  .credits-table td:first-child {
+    color: #ffeb99;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    width: 180px;
+    padding-right: 20px;
+    padding-top: 11px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 1);
+  }
+
+  
+  .lyric-block {
+    background: rgba(50, 50, 50, 0.85);
+    border-left: 3px solid #ffeb99;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #f5f5f5;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 1);
+  }
+
+  .lyric-note {
+    font-family: 'DM Mono', monospace;
+    font-style: normal;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 8px;
+    display: block;
+  }
+
+
+  .callout {
+    border: 1px solid #888;
+    padding: 18px 20px;
+    margin: 16px 0;
+    background: rgba(50, 50, 50, 0.8);
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+  }
+
+  .callout-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #ffeb99;
+    margin-bottom: 6px;
+  }
+
+  .callout p {
+    font-size: 12px;
+    margin: 0;
+    color: #f5f5f5;
+  }
+
+ 
+  .callout.corrected {
+    border-color: var(--corrected-border);
+    background: var(--corrected);
+  }
+  .callout.corrected .callout-label {
+    color: var(--corrected-border);
+  }
+
+  
+  .motif-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 12px;
+  }
+
+  .motif-row:first-child {
+    border-top: 1px solid var(--rule);
+  }
+
+  .motif-source {
+    font-style: italic;
+    color: var(--muted);
+    width: 220px;
+    flex-shrink: 0;
+    font-size: 11px;
+  }
+
+  .motif-origin {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border: 1px solid var(--rule);
+  }
+
+
+  .footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 20px;
+    margin-top: 60px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    display: flex;
+    justify-content: space-between;
+  }
+
+
+  .divider {
+    height: 1px;
+    background: var(--rule);
+    margin: 48px 0;
+  }
+
+  
+  .n {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--rule);
+    float: left;
+    margin-right: 10px;
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  strong {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  del {
+    color: #b44;
+    text-decoration: line-through;
+    font-size: 11px;
+  }
+  ins {
+    color: var(--corrected-border);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    opacity: 0.6;
+  }
+
+  .content-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+  <video class="video-background" autoplay loop playsinline>
+    <source src="VOAC.mp4" type="video/mp4">
+    lolazo no soportas audio xd o video yo q se cheka tu madre.
+  </video>
+
+
+  <div class="content-overlay"></div>
+
+  <script>
+    const video = document.querySelector('.video-background');
+    document.addEventListener('click', () => {
+      video.play().catch(() => {});
+    }, { once: true });
+  </script>
+
+  <div class="page">
+
+
+    <div class="header">
+      <div class="header-eyebrow">Documentación · ミラクルミュージカル ·</div>
+      <div class="header-title">Variations on a Cloud</div>
+      <div class="header-subtitle">Single · Track 0 · Hawaii: Part II</div>
+      <div class="header-meta">
+        <span><b>Lanzamiento</b><br>11 · IX · 2012</span>
+        <span><b>Proyecto</b><br>Miracle Musical</span>
+        <span><b>Duración</b><br>3:10</span>
+        <span><b>Tema</b><br>11-S · 2001</span>
+      </div>
+    </div>
+    
+
+    <div class="block">
+      <div class="block-label">I — El Proyecto</div>
+      <div class="block-title">ミラクルミュージカル (Miracle Musical)</div>
+      <p>Proyecto musical encabezado por <strong>Joe Hawley</strong>, coordinado y producido por <strong>Ross Federman</strong> y <strong>Bora Karaca</strong>. Nació poco después de que Tally Hall entrara en hiatus indefinido en 2011. Su única descripción oficial es: <em>"Genre of infinity, which is expressed through hologram"</em> (Género de infinidad, expresado a través del holograma).</p>
+      <p>Todos sus miembros centrales —<strong>Joe Hawley, Ross Federman, Rob Cantor, Zubin Sedghi y Bora Karaca</strong>— provienen de <strong>Tally Hall</strong>, banda de indie rock de Ann Arbor, Michigan, formada en diciembre de 2002. El único miembro de Tally Hall que no participó de forma central fue <strong>Andrew Horowitz</strong>, aunque contribuyó con piano en algunas pistas del álbum <em>Hawaii: Part II</em>.</p>
+    </div>
+
+
+
+    <div class="block">
+      <div class="block-label">II — Miembros y Participantes</div>
+      <div class="block-title">Quiénes la hicieron</div>
+
+      <div class="cast-grid">
+        <div class="cast-row">
+          <span class="cast-name">Joe Hawley</span>
+          <span class="cast-role">Voz principal · Compositor · Director</span>
+        </div>
+        <div class="cast-row">
+          <span class="cast-name">Rob Cantor</span>
+          <span class="cast-role">Segunda voz · Co-letrista</span>
+        </div>
+        <div class="cast-row">
+          <span class="cast-name">Bora Karaca</span>
+          <span class="cast-role">Ingeniería de audio · Co-compositor · Productor</span>
+        </div>
+        <div class="cast-row">
+          <span class="cast-name">Roman Vail</span>
+          <span class="cast-role">Masterización · JLM, Brooklyn, NY</span>
+        </div>
+        <div class="cast-row">
+          <span class="cast-name">Ross Federman</span>
+          <span class="cast-role">Co-productor · Co-compositor del proyecto</span>
+        </div>
+        <div class="cast-row">
+          <span class="cast-name">Zubin Sedghi</span>
+          <span class="cast-role">Miembro vocal del proyecto (Hawaii: Part II)</span>
+        </div>
+      </div>
+
+      <br>
+
+
+      <div class="callout">
+        <div class="callout-label">Joe Hawley — Compositor principal</div>
+        <p>Nacido el <strong>23 de septiembre de 1982</strong> en Detroit, Michigan (criado en Bloomfield Hills, MI). Double major en Cine e Inglés en la Universidad de Michigan (graduado con honores, 2005). Fundó el grupo de comedia <em>AnonyMous</em> y produjo el <strong>largometraje</strong> <em>Sargasm</em>. Propuso el nombre "Tally Hall". Corbata roja en el grupo. Ideó los conceptos visuales del proyecto.</p>
+      </div>
+      <br>
+      <div class="callout">
+        <div class="callout-label">Rob Cantor — Segunda voz y co-letrista</div>
+        <p>Nacido el <strong>26 de agosto de 1983</strong> en Bloomfield Hills, Michigan. Estudió Biología Molecular y Celular en la Universidad de Michigan (graduado 2005, con especialización menor en Música No Profesional). Rechazó una beca completa para la escuela de medicina de la U of M para dedicarse a la música con Tally Hall. Corbata amarilla en Tally Hall. Posterior a Tally Hall, compositor para Disney (incluyendo <em>The Ghost and Molly McGee</em>) y autor del álbum solista <em>Not a Trampoline</em> (marzo 2014).</p>
+      </div>
+    </div>
+
+
+
+    <div class="block">
+      <div class="block-label">III — Creación</div>
+      <div class="block-title">Cómo nació la canción</div>
+      <p>La fecha exacta de escritura es desconocida. Sin embargo, un <strong>instrumental temprano</strong> puede escucharse en un outtake del <em>Tally Hall's Internet Show</em> titulado <em>"People Making People"</em> — identificado también como un segmento dentro del montaje final del <strong>Episodio 10, "Good Night"</strong> — grabado aproximadamente en <strong>2007</strong>.</p>
+
+      <div class="callout">
+        <div class="callout-label">Dato de grabación verificado</div>
+        <p>Joe Hawley grabó sus vocales para esta canción <strong>en un bote cubierto, dentro de un granero</strong>. La ingeniería fue realizada por Bora Karaca en <em>"The LaBORAtory"</em>, Beverly Hills, CA. La masterización la realizó Roman Vail en JLM, Brooklyn, Nueva York.</p>
+      </div>
+    </div>
+
+
+
+    <div class="block">
+      <div class="block-label">IV — Lanzamiento y distribución</div>
+      <div class="block-title">Historia de su publicación</div>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-date">11 · Sept · 2012</div>
+          <p class="tl-text">Lanzada como <strong>descarga digital gratuita</strong> para quienes hicieran pre-orden de <em>Hawaii: Part II</em>. Es catalogada como el <strong>"Track 0"</strong> del álbum —una pista cero, antes del inicio oficial, como prólogo. Durante un período limitado también se podía obtener comprando una <strong>postal física</strong> en la tienda oficial: incluía código de descarga para la canción y para el álbum, más un <em>doodle</em> dibujado y firmado a mano por Joe Hawley.</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">12 · Dic · 2012</div>
+          <p class="tl-text">Se lanza <em>Hawaii: Part II</em> a las <strong>12:12:12 a.m.</strong> La canción queda definitivamente asociada al álbum. Posteriormente, quien compre el álbum en Bandcamp también recibe la canción incluida.</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">11 · Sept · 2015</div>
+          <p class="tl-text">Se sube el <strong>video musical oficial</strong> a YouTube. Combina imágenes reales del ataque del 11-S con tomas de nubes, en escala de grises. Las voces son representadas por <strong>títeres de colores</strong>. Los comentarios son desactivados ante la confusión inicial del público.</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">23 · Jun · 2016</div>
+          <p class="tl-text">Joe Hawley la interpreta en solitario en el festival <strong>Sonic Lunch</strong>, Ann Arbor, Michigan. La canción deriva hacia un cover de <em>Jump</em> de Van Halen, con el backing track sampleando <em>Imagine</em> de John Lennon (en referencia a un mashup de Mister Buzz de 2014).</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">18 · Jun · 2019</div>
+          <p class="tl-text">Se anuncia la pre-venta de un <strong>vinilo de 7 pulgadas, 45 rpm, color blanco</strong> en edición limitada (salida efectiva: 12 de julio de 2019). La cara B contiene <em>White Ball (8-Bit)</em> y <em>Dream Sweet in Sea Major (8-Bit)</em>. Se incluye un sombrero de lana bordado con el logo del proyecto.</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">13 · Ago · 2021</div>
+          <p class="tl-text">La canción es <strong>retirada de todos los servicios de streaming</strong> sin explicación, generando confusión masiva entre los fans.</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">11 · Sept · 2021</div>
+          <p class="tl-text">La canción <strong>regresa a streaming</strong> —exactamente el 20° aniversario de los ataques al World Trade Center y el <strong>9° aniversario</strong> de su propio lanzamiento (11/09/2012). El movimiento se interpreta como intencional de Joe Hawley u otro miembro del proyecto.</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">4 · Jun · 2022</div>
+          <p class="tl-text">El video musical es <strong>eliminado de YouTube</strong> por violar las normas de la comunidad. Como resultado, los comentarios son reactivados en el canal de Miracle Musical.</p>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="block">
+      <div class="block-label">V — Letra y significado</div>
+      <div class="block-title">Lo que dice y lo que significa</div>
+
+      <p>La canción trata sobre los <strong>ataques terroristas al World Trade Center del 11 de septiembre de 2001</strong>. La teoría más extendida es que la letra está narrada desde el punto de vista de <strong>dos personas atrapadas en las torres</strong>, momentos antes del colapso.</p>
+
+      <div class="lyric-block">
+        "Both of us see a cloud / or whatever we may believe / being it may be proud / or whatever we want to see"
+        <span class="lyric-note">→ Apertura: dos voces, una misma realidad. La nube como metáfora de lo que se ve desde las ventanas.</span>
+      </div>
+
+      <div class="lyric-block">
+        "OK jump / to end it all / let this one be to break the fall"
+        <span class="lyric-note">→ Referencia directa a las personas que saltaron de las torres durante el ataque. Es el verso más explícito.</span>
+      </div>
+
+      <div class="lyric-block">
+        "Cirrus in (cumulus) / light (dark) / you lie (vow)"
+        <span class="lyric-note">→ Las palabras entre paréntesis representan la segunda voz —una técnica de escritura en capas que simboliza dos perspectivas de la misma tragedia.</span>
+      </div>
+
+      <div class="lyric-block">
+        "It's a little bit of magic to end the world"
+        <span class="lyric-note">→ Puede interpretarse como la percepción surrealista de un evento de escala catastrófica visto desde adentro.</span>
+      </div>
+
+      <div class="callout">
+        <div class="callout-label">Lectura alternativa documentada</div>
+        <p>Otra capa de interpretación —también extendida— propone que la canción habla del <strong>conflicto interno de la humanidad consigo misma</strong>: las variaciones de la nube como símbolo de las múltiples caras de un mismo desastre colectivo. Ambas lecturas coexisten. Joe Hawley no ha dado una declaración definitiva sobre su significado exacto.</p>
+      </div>
+
+      <p style="margin-top:14px;">El título mismo —<em>Variations on a Cloud</em>— refleja la estructura musical: la nube no es estática, sus formas cambian. Del mismo modo, la canción varía, repite y muta sobre sus propios temas.</p>
+    </div>
+
+
+
+    <div class="block">
+      <div class="block-label">VI — Arquitectura musical</div>
+      <div class="block-title">Motivos y referencias internas</div>
+
+      <p>La canción funciona como una <strong>síntesis de todo el universo musical de Miracle Musical y Tally Hall</strong>. Integra fragmentos y melodías de obras previas, actuando como un cierre o recapitulación.</p>
+
+      <div class="motif-row">
+        <span class="motif-source">Murders</span>
+        <span class="motif-origin">Hawaii: Part II</span>
+      </div>
+      <div class="motif-row">
+        <span class="motif-source">Isle Unto Thyself</span>
+        <span class="motif-origin">Hawaii: Part II</span>
+      </div>
+      <div class="motif-row">
+        <span class="motif-source">Dream Sweet in Sea Major</span>
+        <span class="motif-origin">Hawaii: Part II</span>
+      </div>
+      <div class="motif-row">
+        <span class="motif-source">Ruler of Everything</span>
+        <span class="motif-origin">Tally Hall · Marvin´s Marvelous Mechanical Museum (2005)</span>
+      </div>
+
+      <br>
+      <div class="callout">
+        <div class="callout-label">Sobre Ruler of Everything</div>
+        <p>Su inclusión es simbólica: esa canción de Tally Hall habla de que el <strong>tiempo es el gobernante de todo</strong> y eventualmente destruirá cualquier cosa. Usarla aquí, en el contexto del 11-S, añade una dimensión de inevitabilidad y duelo.</p>
+      </div>
+
+      <p style="margin-top:14px;">El formato vocal de dos voces —Rob Cantor y Joe Hawley— ha sido comparado por críticos y seguidores con los grandes duetos de musicales de Broadway: dos protagonistas que no se hablan directamente, pero construyen un diálogo implícito.</p>
+    </div>
+
+
+
+    <div class="block">
+      <div class="block-label">VII — Créditos oficiales</div>
+      <div class="block-title">Ficha técnica verificada</div>
+
+      <table class="credits-table">
+        <tr>
+          <td>Música</td>
+          <td>Joe Hawley</td>
+        </tr>
+        <tr>
+          <td>Letra</td>
+          <td>Joe Hawley &amp; Rob Cantor</td>
+        </tr>
+        <tr>
+          <td>Compositores registrados</td>
+          <td>Joseph Hawley · Robert Howard Cantor · Bora Karaca · Ross S. Federman</td>
+        </tr>
+        <tr>
+          <td>Voces</td>
+          <td>Joe Hawley (principal) · Rob Cantor (segunda voz)</td>
+        </tr>
+        <tr>
+          <td>Producción</td>
+          <td>Joe Hawley · Ross Federman · Bora Karaca</td>
+        </tr>
+        <tr>
+          <td>Ingeniería</td>
+          <td>Bora Karaca — The LaBORAtory, Beverly Hills, CA</td>
+        </tr>
+        <tr>
+          <td>Masterización</td>
+          <td>Roman Vail — JLM, Brooklyn, Nueva York</td>
+        </tr>
+        <tr>
+          <td>Duración</td>
+          <td>3:10</td>
+        </tr>
+        <tr>
+          <td>Sello</td>
+          <td>Independiente / Miracle Musical (Bandcamp)</td>
+        </tr>
+        <tr>
+          <td>Registro BMI</td>
+          <td>Confirmado en el BMI Repertoire Index bajo "Hawley"</td>
+        </tr>
+      </table>
+    </div>
+
+
+
+    <div class="block">
+      <div class="block-label">VIII — Hechos notables</div>
+      <div class="block-title">Lo que no está en ningún lado junto</div>
+
+      <p><strong>Numerología del lanzamiento.</strong> La canción salió el 11/09/12 —fecha que replica el 11 de septiembre. El álbum <em>Hawaii: Part II</em> fue lanzado el 12/12/12 a las 12:12:12 a.m. La obsesión por los números es una firma del proyecto.</p>
+
+      <p><strong>Track 0.</strong> El posicionamiento como "pista cero" es inusual y deliberado: la canción existe antes de que el álbum comience, como si fuera un evento previo o un preludio que el oyente ya trae consigo.</p>
+
+      <p><strong>Postcards.</strong> Durante un periodo limitado, la canción se obtenía comprando una postal física en la tienda del sitio oficial. Incluía un código de descarga para la canción y para <em>Hawaii: Part II</em>, más un <em>doodle</em> dibujado a mano y firmado por Joe Hawley.</p>
+
+      <p><strong>Única actuación en vivo.</strong> La única presentación registrada de Miracle Musical fue en el festival privado <strong><em>"Seanaroo"</em></strong> —la fiesta victoriana privada de Sean Donnelly en Echo Park—, alrededor de 2014. La actuación de Sonic Lunch 2016 fue de Joe Hawley como solista, sin Rob Cantor.</p>
+
+      <p><strong>Sin continuación confirmada.</strong> En el AMA de Reddit del <strong>13 de diciembre de 2018</strong>, Joe Hawley declaró: <em>"There won't be a Hawaii: Part I or Hawaii: Part III or whatever, so please stop asking, but we might further explore the themes of ミラクルミュージカル in some form."</em> (No habrá una Hawaii: Part I ni una Part III, así que dejen de preguntar, pero podría explorarse más el universo de ミラクルミュージカル de alguna forma.)</p>
+    </div>
+
+
+    <div class="footer">
+      <span>Información verificada en fuentes múltiples · Revisado Abril 2026</span>
+
+      <span>ミラクルミュージカル · Hawaii: Part II (ola we)</span>
+      
+    </div>
+
+  </div>
+</body>
+</html>
