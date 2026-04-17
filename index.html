@@ -401,14 +401,8 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: -3;
+    z-index: -2;
     opacity: 0.6;
-    display: block;
-    background: #000;
-  }
-
-  video::-webkit-media-controls {
-    display: none !important;
   }
 
   body::before {
@@ -419,7 +413,7 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-    z-index: -4;
+    z-index: -3;
   }
 
   .content-overlay {
@@ -429,7 +423,7 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    z-index: -2;
+    z-index: -1;
     pointer-events: none;
   }
 
@@ -584,7 +578,7 @@
 </head>
 <body>
 
-  <video class="video-background" autoplay loop muted playsinline>
+  <video class="video-background" autoplay loop playsinline>
     <source src="https://raw.githubusercontent.com/VictorGugug/VOAC/main/VOAC.mp4" type="video/mp4">
     lolazo no soportas audio xd o video yo q se cheka tu madre.
   </video>
@@ -594,7 +588,6 @@
 
   <script>
     const video = document.querySelector('.video-background');
-    video.play().catch(() => {});
     document.addEventListener('click', () => {
       video.play().catch(() => {});
     }, { once: true });
